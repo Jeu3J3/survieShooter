@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DeplacementPersoScript : MonoBehaviour
 {
@@ -65,6 +66,8 @@ public class DeplacementPersoScript : MonoBehaviour
             anim.SetBool("mort", true);
             // On empeche les mouvements du perso a sa mort
             rb.constraints = RigidbodyConstraints.FreezePosition;
+            // On appelle la fonction qui change la scene pour la scene de fin de partie
+            Invoke("Mort", 3f);
         }
 
         // Si le personnage est blesse et que la partie n'est pas finie...
@@ -256,5 +259,14 @@ public class DeplacementPersoScript : MonoBehaviour
         Blesse = false;
         gameObject.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>().enabled = true;
         gameObject.transform.Find("Player").GetComponent<SkinnedMeshRenderer>().enabled = true;
+    }
+
+    // Fonction qui relance le jeu a la mort du joueur (lorsque la partie est finie)
+    void Mort()
+    {
+        if (partieFinie)
+        {
+            SceneManager.LoadScene("fin");
+        }
     }
 }
